@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Codex — 智能编程协作伙伴</title>
+  <meta name="description" content="一个介绍 Codex 的现代静态落地页，展示其代码理解、自动化协作与工程效率能力。" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070a12;
+      --bg-soft: #0d1324;
+      --panel: rgba(255, 255, 255, 0.08);
+      --panel-strong: rgba(255, 255, 255, 0.13);
+      --text: #eef4ff;
+      --muted: #a9b7d0;
+      --brand: #7c5cff;
+      --brand-2: #00d4ff;
+      --accent: #6df2b8;
+      --line: rgba(255, 255, 255, 0.16);
+      --shadow: 0 24px 90px rgba(0, 0, 0, 0.45);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(124, 92, 255, 0.38), transparent 34rem),
+        radial-gradient(circle at 88% 18%, rgba(0, 212, 255, 0.26), transparent 28rem),
+        linear-gradient(135deg, var(--bg), #0a1020 54%, #060812);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.7), transparent 72%);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .logo { display: inline-flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: -0.04em; }
+    .logo-mark {
+      width: 38px; height: 38px; border-radius: 13px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      display: grid; place-items: center;
+      box-shadow: 0 14px 38px rgba(0, 212, 255, .26);
+    }
+
+    .nav-links { display: flex; gap: 24px; color: var(--muted); font-size: 14px; }
+    .nav-links a:hover { color: var(--text); }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.02fr .98fr;
+      gap: 56px;
+      align-items: center;
+      padding: 72px 0 92px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 9px 14px; border: 1px solid var(--line); border-radius: 999px;
+      color: #dbe6ff; background: rgba(255,255,255,.07); backdrop-filter: blur(16px);
+      font-size: 14px;
+    }
+    .eyebrow span { width: 8px; height: 8px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 20px var(--accent); }
+
+    h1 { margin: 22px 0 20px; font-size: clamp(48px, 7vw, 86px); line-height: .95; letter-spacing: -0.075em; }
+    .gradient-text { background: linear-gradient(120deg, #fff, #9fdcff 48%, #b6a5ff); -webkit-background-clip: text; color: transparent; }
+    .lead { margin: 0; max-width: 650px; color: var(--muted); font-size: 20px; line-height: 1.75; }
+
+    .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+    .button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 52px; padding: 0 22px; border-radius: 16px; font-weight: 700;
+      border: 1px solid var(--line); transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button.primary { background: linear-gradient(135deg, var(--brand), var(--brand-2)); border: 0; color: white; box-shadow: 0 18px 48px rgba(124, 92, 255, .35); }
+    .button.secondary { background: rgba(255,255,255,.06); color: #e9f0ff; }
+
+    .terminal-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.06));
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(24px);
+    }
+    .terminal-top { display: flex; gap: 8px; padding: 18px 20px; border-bottom: 1px solid var(--line); background: rgba(3, 7, 18, .28); }
+    .dot { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; }
+    .dot:nth-child(2) { background: #ffbd2e; }
+    .dot:nth-child(3) { background: #28c840; }
+    pre { margin: 0; padding: 28px; color: #dce8ff; font: 500 15px/1.8 "SFMono-Regular", Consolas, monospace; white-space: pre-wrap; }
+    .code-muted { color: #7f8daa; }
+    .code-accent { color: var(--accent); }
+    .code-brand { color: #9ab8ff; }
+
+    .section { padding: 30px 0 86px; position: relative; z-index: 1; }
+    .section-header { max-width: 760px; margin-bottom: 30px; }
+    .section-header h2 { margin: 0 0 12px; font-size: clamp(32px, 4vw, 52px); letter-spacing: -0.055em; }
+    .section-header p { margin: 0; color: var(--muted); font-size: 18px; line-height: 1.7; }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card {
+      padding: 26px;
+      min-height: 230px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+    .card:hover { transform: translateY(-4px); background: var(--panel-strong); border-color: rgba(255,255,255,.26); }
+    .icon { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 15px; background: rgba(124,92,255,.17); color: var(--accent); font-size: 22px; margin-bottom: 28px; }
+    .card h3 { margin: 0 0 12px; font-size: 21px; letter-spacing: -0.03em; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.65; }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 20px;
+    }
+    .step { display: flex; gap: 18px; padding: 24px; border-radius: 22px; background: rgba(255,255,255,.065); border: 1px solid var(--line); }
+    .step-number { flex: 0 0 38px; width: 38px; height: 38px; border-radius: 13px; display: grid; place-items: center; background: linear-gradient(135deg, var(--brand), var(--brand-2)); font-weight: 900; }
+    .step h3 { margin: 0 0 8px; }
+    .step p { margin: 0; color: var(--muted); line-height: 1.6; }
+
+    .cta { text-align: center; padding: 64px 28px; border-radius: 32px; border: 1px solid var(--line); background: linear-gradient(135deg, rgba(124,92,255,.22), rgba(0,212,255,.14)); box-shadow: var(--shadow); }
+    .cta h2 { margin: 0 0 14px; font-size: clamp(34px, 5vw, 58px); letter-spacing: -0.06em; }
+    .cta p { margin: 0 auto 28px; max-width: 680px; color: var(--muted); font-size: 18px; line-height: 1.7; }
+
+    footer { padding: 36px 0 48px; color: #7f8daa; text-align: center; font-size: 14px; }
+
+    @media (max-width: 880px) {
+      .nav-links { display: none; }
+      .hero, .workflow { grid-template-columns: 1fr; }
+      .hero { padding-top: 42px; }
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="container nav">
+    <a class="logo" href="#top" aria-label="Codex 首页">
+      <span class="logo-mark">⌘</span>
+      <span>Codex</span>
+    </a>
+    <nav class="nav-links" aria-label="主要导航">
+      <a href="#features">能力</a>
+      <a href="#workflow">流程</a>
+      <a href="#start">开始</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="container hero">
+      <div>
+        <div class="eyebrow"><span></span>面向现代工程团队的 AI 编程协作伙伴</div>
+        <h1>把想法转化为<br><span class="gradient-text">可运行的代码。</span></h1>
+        <p class="lead">Codex 可以理解你的代码库、规划实现路径、编写功能、修复问题并运行验证，让开发者把更多精力放在产品判断与创造上。</p>
+        <div class="actions">
+          <a class="button primary" href="#features">探索能力 →</a>
+          <a class="button secondary" href="#workflow">了解工作流</a>
+        </div>
+      </div>
+
+      <aside class="terminal-card" aria-label="Codex 工作示例">
+        <div class="terminal-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <pre><span class="code-muted">$ codex "为结账页添加优惠券校验"</span>
+
+<span class="code-brand">分析代码库</span>  ✓ 发现订单模块与表单状态
+<span class="code-brand">制定计划</span>    ✓ 拆分 UI、校验、测试任务
+<span class="code-brand">编辑文件</span>    ✓ 更新组件与业务逻辑
+<span class="code-accent">运行验证</span>    ✓ 单元测试通过
+
+<span class="code-muted">Ready for review.</span></pre>
+      </aside>
+    </section>
+
+    <section class="container section" id="features">
+      <div class="section-header">
+        <h2>从理解到交付，覆盖完整开发闭环</h2>
+        <p>Codex 不只是补全代码，而是以工程上下文为核心，协助完成从需求拆解到变更验证的关键步骤。</p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <div class="icon">◇</div>
+          <h3>理解大型代码库</h3>
+          <p>快速梳理目录结构、依赖关系与关键实现，减少在陌生项目中定位问题的时间。</p>
+        </article>
+        <article class="card">
+          <div class="icon">✦</div>
+          <h3>自动实现与重构</h3>
+          <p>根据目标生成清晰变更，保持风格一致，并能处理组件、接口、测试等多文件任务。</p>
+        </article>
+        <article class="card">
+          <div class="icon">✓</div>
+          <h3>验证结果可信</h3>
+          <p>通过运行测试、检查构建与总结风险，让每次提交更容易审查、更接近可合并状态。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="container section" id="workflow">
+      <div class="section-header">
+        <h2>自然语言驱动的工程工作流</h2>
+        <p>用一句话描述目标，Codex 会结合项目上下文完成规划、执行与反馈。</p>
+      </div>
+      <div class="workflow">
+        <div class="step"><div class="step-number">1</div><div><h3>描述任务</h3><p>用产品语言说明你希望新增、修复或优化的内容。</p></div></div>
+        <div class="step"><div class="step-number">2</div><div><h3>审阅计划</h3><p>Codex 拆解步骤，明确会影响的模块与验证方式。</p></div></div>
+        <div class="step"><div class="step-number">3</div><div><h3>自动编码</h3><p>在本地工作区完成文件修改，并遵循现有项目规范。</p></div></div>
+        <div class="step"><div class="step-number">4</div><div><h3>提交交付</h3><p>生成清晰总结，附带测试结果，帮助团队快速 review。</p></div></div>
+      </div>
+    </section>
+
+    <section class="container section" id="start">
+      <div class="cta">
+        <h2>让每个迭代更快进入可验证状态</h2>
+        <p>无论是构建新功能、修复线上问题，还是整理遗留代码，Codex 都能成为你稳定、高效的开发搭档。</p>
+        <a class="button primary" href="#top">开始体验 Codex</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container">© 2026 Codex Showcase. Built as a modern static page.</footer>
+</body>
+</html>
